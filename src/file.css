@@ -1,0 +1,28 @@
+
+header {
+    display: flex;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: darkgrey
+}
+
+#sidebar {
+    display: grid;
+    background-color: red;
+    height: 1000px;
+    padding-left: 20px;
+    grid-template-rows: 50px 50px;
+    grid-gap: 10px;
+}
+
+#mainContent {
+    display: grid;
+    grid-template-columns: 1fr 9fr  ;
+    
+}
+
+#DOMAreaContainer {
+    background-color: darkgoldenrod;
+    padding-left: 20px;
+}
