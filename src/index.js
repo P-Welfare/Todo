@@ -1,13 +1,6 @@
-// const { isToday, isTomorrow } = require("date-fns")
-//import {showDefaultUI} from './interface.js'
-//export {projectListDOM}
-//export {todoListDOM}
 import css from "./file.css";
+
 let projectList = []
-
-export {projectList}
-
-//import './interface.js'
 
 
 
@@ -22,66 +15,38 @@ class toDo {
 
 
 }
-// construct project
+
+
 const project = (title) => {
     const tasks = []
     return {title, tasks}
-};
-// create test project
+}
+
+
 const defaultProject = project('Today')
 const defaultProject2 = project('Tomorrow')
-// basic add task function
-function addTask(task) {
-    defaultProject.tasks.push(task)
-};
 
-// default todo test
-const defaultToDo = new toDo('brush teeth', 'brush em good', 'today', 'high')
-const defaultToDo2 = new toDo('eat teeth', 'eat em good', 'today', 'high' )
-
-// create test todo add
-addTask(defaultToDo)
-addTask(defaultToDo2)
-
-
-// function to test add project to projectList
 function addProject(newProject) {
     projectList.push(newProject)
 }
 
-// add project to projectlist
 addProject(defaultProject)
 addProject(defaultProject2)
 
-// add in forEach of array or for... loop
-function deleteProject(index) {
-    projectList.splice(index, 1)
-}
-// let projectListDOM = projectList[0].title
-//console.log(projectList[0])
-//let todoListDOM = [projectList[0].tasks[0].title, projectList[0].tasks[0].description, projectList[0].tasks[0].dueDate, projectList[0].tasks[0].priority]
-//showDefaultUI(projectListDOM)
+function addTask(project,task) {
+    projectList[project].tasks.push(task)
+};
+
+const defaultToDo = new toDo('brush teeth', 'brush em good', 'today', 'high')
+const defaultToDo2 = new toDo('eat teeth', 'eat em good', 'today', 'high' )
+const defaultToDo3 = new toDo('find teeth', 'eat em good', 'today', 'high' )
 
 
-
-/*
-
-SEPERATE THE APPLICATION LOGIC =============== FROM THE MODULES 
-
-*/
-
-
-
-//function listProjects(element) {
-    
- 
- 
- 
- //}
- 
- 
+addTask(0,defaultToDo)
+addTask(1,defaultToDo2)
+addTask(1,defaultToDo3)
 projectList.forEach((element, i) =>
- {
+ {  
 
 
     const sidebar = document.getElementById('sidebar')
@@ -89,85 +54,70 @@ projectList.forEach((element, i) =>
     
     sideBarContainer.id = `${i}`;
     sideBarContainer.textContent = `${projectList[i].title}`;
-    const sideBarButton = document.createElement('button');
-   
+    sideBarContainer.className = `projectTitle`
+    
     sidebar.appendChild(sideBarContainer) 
     
-    sideBarButton.textContent = '+'
-    sideBarButton.className = 'sideBarButtons'
-    sideBarButton.setAttribute("buttonIndex", i)
-    sideBarContainer.appendChild(sideBarButton)
- 
- 
                   
    
 })
 
-const sideBarButtons = Array.from(document.getElementsByClassName('sideBarButtons'))
-sideBarButtons.forEach((element, i) => {
-    let indexRef = i
+const DOMArea = document.getElementById('DOMArea')
+
+const addToTaskArea = (id) => {
+
+    for (let i= 0; i < projectList[id].tasks.length ; i++) { 
+        const DOMArea = document.getElementById('DOMArea')
+        let toDoContainer = document.createElement('div')
+        toDoContainer.textContent = `${projectList[id].tasks[i].title}`
+        DOMArea.appendChild(toDoContainer)
+        
+        let DOMAreaButton = document.createElement('button')
+        DOMAreaButton.className = 'DOMAreaButton'
+        DOMAreaButton.textContent = 'Delete'
+        DOMAreaButton.setAttribute("dataindex", i)
+
+        toDoContainer.appendChild(DOMAreaButton)
+
+    
 
 
-    element.addEventListener('click', () => {
+    }
+    activateDelete(id)
+
+
+}
+
+const projectTitleList = Array.from(document.getElementsByClassName('projectTitle'))
+projectTitleList.forEach((project, i) => {
+
+    let id = project.id
+    project.addEventListener('click', () => {
         DOMArea.textContent = ''
-        for (let i= 0; i < projectList.length ; i++) { 
-            
-            writeToDoDiv(i, indexRef)
-        }   
-        deleteButtonFunc()
 
-
+    console.log(i)
+    addToTaskArea(id)
     })
-
-
-
-})
-
-
-
-const writeToDoDiv = (i, indexRef) => 
-{
-    let DOMArea = document.getElementById('DOMArea')
-    let DOMAreaButton = document.createElement('button')
-    DOMAreaButton.className = 'DOMAreaButton'
-    DOMAreaButton.textContent = 'Delete'
-    let toDoContainer = document.createElement('div')
-    toDoContainer.setAttribute("dataindex", i)
     
-    toDoContainer.textContent = `${[projectList[indexRef].tasks[i].title,  projectList[indexRef].tasks[i].description, projectList[indexRef].tasks[i].dueDate, projectList[indexRef].tasks[i].priority]}`
-   
-   
-    DOMArea.appendChild(toDoContainer)
-    toDoContainer.appendChild(DOMAreaButton)
+    
+
+}) 
+const deleteToDo = (id, indexRef) => {
+    projectList[id].tasks.splice(indexRef, 1)
+
 }
 
+const activateDelete = (id) => {
+        const deleteButtons = Array.from(document.getElementsByClassName('DOMAreaButton'))
+            deleteButtons.forEach((element) => {
+                let indexRef = element.dataindex
+                     element.addEventListener('click', () => {
+                     deleteToDo(id, indexRef)
+                     DOMArea.textContent = ''
+                     addToTaskArea(id)
 
-
-const deleteButtonFunc = () => 
-{ 
-    const deleteButtons = Array.from(document.getElementsByClassName('DOMAreaButton'))
-    deleteButtons.forEach((element, i) => {
-        let indexRef = i
-
-            element.addEventListener('click', () => {
-            deleteToDo(indexRef,element)
-            console.log(`${i}`)
-
+                    })
             })
-    })
-
-}    
 
 
-const deleteToDo = (indexRef, i) => {
-    projectList[indexRef].tasks.splice(i, 1)
-    
 }
-/* NEXT TO DO
-
-FUNCTION TO ADD TO SPECIFIC OBJECT IN THE ARRAY
-FUNCTION TO SHOW TODO BASED ON WHAT IS SELECTED ON THE LEFT
-MAKE THE LEFT LIST TITLES (TODAY TOMORROW ETC) ACT AS CLICKABLE BUTTONS
-WRAP FOR EACH PROJECTLIST INTO RENDER/WIPE FUNCTION
- ,....START THINKING ABOUT ADDING BUTTONS ETC ON CREATION
- */
