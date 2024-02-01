@@ -87,6 +87,22 @@ const addToTaskArea = (id) => {
 
 
 }
+const newTask = (id) => {
+
+    const DOMCreateArea = document.getElementById('DOMCreateArea')
+    DOMCreateArea.textContent = ''
+    let newTaskButtonContainer = document.createElement('div')
+    let newTaskButton = document.createElement('button')
+       newTaskButton.textContent = 'Add'
+   
+       newTaskButton.id = 'newTaskButton'
+       DOMCreateArea.appendChild(newTaskButtonContainer) 
+
+       newTaskButtonContainer.appendChild(newTaskButton) 
+   
+   }
+ //<div id="myModal" class="modal">
+
 
 const projectTitleList = Array.from(document.getElementsByClassName('projectTitle'))
 projectTitleList.forEach((project, i) => {
@@ -96,9 +112,14 @@ projectTitleList.forEach((project, i) => {
         DOMArea.textContent = ''
 
     console.log(i)
-    addToTaskArea(id)
-    })
     
+    addToTaskArea(id)
+    newTask(id)
+    addModal(id)
+    activateModal(id)
+
+    })
+
     
 
 }) 
@@ -110,7 +131,7 @@ const deleteToDo = (id, indexRef) => {
 const activateDelete = (id) => {
         const deleteButtons = Array.from(document.getElementsByClassName('DOMAreaButton'))
             deleteButtons.forEach((element) => {
-                let indexRef = element.dataindex
+                let indexRef = element.getAttribute('dataindex')
                      element.addEventListener('click', () => {
                      deleteToDo(id, indexRef)
                      DOMArea.textContent = ''
@@ -119,5 +140,107 @@ const activateDelete = (id) => {
                     })
             })
 
+
+}
+
+
+const addModal = (id) => {
+        
+    const DOMCreateArea = document.getElementById('DOMCreateArea')
+
+        const myModal = document.createElement('dialog')
+             myModal.id = 'myModal'
+             myModal.class = 'modal'
+        
+        const myModalContent = document.createElement('div')
+            myModalContent.className = 'modal-content'
+           
+        const formContainer = document.createElement('p')
+        
+        const titleField = document.createElement('label')
+            titleField.setAttribute("for", "title")
+            titleField.textContent = "Title:"
+
+        const titleInput = document.createElement('input')
+            titleInput.setAttribute("type", "text")
+            titleInput.id = 'title'
+
+        const descriptionField = document.createElement('label')
+            descriptionField.setAttribute("for", "description")
+            descriptionField.textContent = "Description:"
+
+        const descriptionInput = document.createElement('input')
+        descriptionInput.setAttribute("type", "text")
+        descriptionInput.id = 'description'
+
+        const dueDateField = document.createElement('label')
+            dueDateField.setAttribute("for", "dueDate")
+            dueDateField.textContent = "Due Date:"
+
+        const dueDateInput = document.createElement('input')
+            dueDateInput.setAttribute("type", "text")
+            dueDateInput.id = 'dueDate'
+
+        const priorityField = document.createElement('label')
+            priorityField.setAttribute("for", "priority")
+            priorityField.textContent = "Priority:"
+
+        const priorityInput = document.createElement('input')
+        priorityInput.setAttribute("type", "text")
+        priorityInput.id = 'priority'
+
+        const modalText = document.createElement('p')
+             modalText.textContent = `Add new task to '${projectList[id].title}'.`
+
+        const modalSubmit = document.createElement('button')
+            modalSubmit.textContent = 'Submit'
+            modalSubmit.id = 'submit'
+        const modalCancel = document.createElement('button')
+            modalCancel.textContent = 'Cancel'
+            modalCancel.id = 'cancel'
+             DOMCreateArea.appendChild(myModal) 
+             myModal.appendChild(myModalContent) 
+             myModalContent.appendChild(modalText)
+             myModalContent.appendChild(modalSubmit)
+             myModalContent.appendChild(modalCancel)
+             myModalContent.appendChild(formContainer)
+             formContainer.appendChild(titleField)
+             formContainer.appendChild(titleInput)
+             formContainer.appendChild(descriptionField)
+             formContainer.appendChild(descriptionInput)
+             formContainer.appendChild(dueDateField)
+             formContainer.appendChild(dueDateInput)
+             formContainer.appendChild(priorityField)
+             formContainer.appendChild(priorityInput)
+
+        
+   }
+
+const activateModal = (id) => {
+    const modalButton = document.getElementById('newTaskButton')
+    const cancelButton = document.getElementById('cancel');
+    const modalSubmit = document.getElementById('submit')
+    const dialog = document.querySelector("dialog");
+
+    modalSubmit.addEventListener('click', (event) => {
+        event.preventDefault(); 
+        dialog.close();
+        const title = document.getElementById("title");
+        const description = document.getElementById("description")
+        const dueDate = document.getElementById("dueDate")
+        const priority = document.getElementById("priority")
+        var addNewTask = new toDo(title.value, description.value, dueDate.value, priority.value)
+        addTask(id, addNewTask)
+        DOMArea.textContent = ''
+        addToTaskArea(id)
+    
+
+    })
+    modalButton.addEventListener('click', () => {
+        dialog.showModal();
+    }) 
+    cancelButton.addEventListener("click", () => {
+        dialog.close();
+      });
 
 }
