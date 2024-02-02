@@ -10,10 +10,18 @@
         To-Do-List
     </H2></header>
     <div id="mainContent">
-    
+
              <div id="sidebar">
-                <strong><h2>Projects</h2></strong>
-             </div>
+                <div id="addNewProjectContainer">
+                    <strong><h2>Projects</h2></strong>
+                    <label for="projectTitle">Add Project:</label>
+                    <input type="text" id="projectTitle" placeholder="New Project">
+
+                    <button type="submit" id="addNewProjectButton">+</button>
+
+                </div>
+                <div id="sideBarContainer"></div>
+             </div> 
              <div id="DOMAreaContainer">
                 <div id="DOMCreateArea"></div>
                 <strong><h2>Things to Do</h2></strong>

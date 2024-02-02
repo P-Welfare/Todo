@@ -1,8 +1,17 @@
 import css from "./file.css";
 
 let projectList = []
+const addNewProjectButton = document.getElementById("addNewProjectButton")
+addNewProjectButton.addEventListener("click", (e) => {
+    e.preventDefault
+    let title = document.getElementById("projectTitle").value
+    const newProjectAdd = project(title)
 
+    addProject(newProjectAdd)
+    console.log(projectList)
 
+    populateProjectListDOM()
+})
 
 class toDo {
     constructor(title, description, dueDate, priority,) {
@@ -45,22 +54,7 @@ const defaultToDo3 = new toDo('find teeth', 'eat em good', 'today', 'high' )
 addTask(0,defaultToDo)
 addTask(1,defaultToDo2)
 addTask(1,defaultToDo3)
-projectList.forEach((element, i) =>
- {  
 
-
-    const sidebar = document.getElementById('sidebar')
-    const sideBarContainer = document.createElement('div')
-    
-    sideBarContainer.id = `${i}`;
-    sideBarContainer.textContent = `${projectList[i].title}`;
-    sideBarContainer.className = `projectTitle`
-    
-    sidebar.appendChild(sideBarContainer) 
-    
-                  
-   
-})
 
 const DOMArea = document.getElementById('DOMArea')
 
@@ -104,7 +98,9 @@ const newTask = (id) => {
  //<div id="myModal" class="modal">
 
 
-const projectTitleList = Array.from(document.getElementsByClassName('projectTitle'))
+const listProjectTitles = () => {
+
+ const projectTitleList = Array.from(document.getElementsByClassName('projectTitle'))
 projectTitleList.forEach((project, i) => {
 
     let id = project.id
@@ -123,6 +119,8 @@ projectTitleList.forEach((project, i) => {
     
 
 }) 
+}
+listProjectTitles()
 const deleteToDo = (id, indexRef) => {
     projectList[id].tasks.splice(indexRef, 1)
 
@@ -243,4 +241,50 @@ const activateModal = (id) => {
         dialog.close();
       });
 
+}
+
+
+
+const populateProjectListDOM = () => {
+    sideBarContainer.textContent = ""
+
+projectList.forEach((element, i) =>
+ {  
+
+
+    const sideBarContainer = document.getElementById('sideBarContainer')
+    const sideBarDivContainer = document.createElement('div')
+    const sideBarContainer2 = document.createElement('div')
+    const sideBarDivButton = document.createElement('button')
+    sideBarDivButton.textContent = 'X'
+    sideBarDivButton.setAttribute('button-index', i)
+    sideBarDivButton.className = 'projectDeleteButtons'
+    sideBarContainer2.id = `${i}`;
+    sideBarContainer2.textContent = `${projectList[i].title}`;
+    sideBarContainer2.className = `projectTitle`
+    sideBarContainer.appendChild(sideBarDivContainer)
+    sideBarDivContainer.appendChild(sideBarContainer2) 
+    sideBarDivContainer.appendChild(sideBarDivButton)
+                  
+   
+})
+
+
+listProjectTitles()
+}
+
+populateProjectListDOM()
+
+
+const activateProjectDeleteButtons = (id) => {
+    let projectDeleteButtons = Array.from(document.getElementsByClassName('projectDeleteButtons'))
+    projectDeleteButtons.forEach((button)  => {
+        deleteProjectFunction()
+
+    } )
+}
+
+
+const deleteProjectFunction = (id) => {
+    projectList.splice(id, 1)
 }

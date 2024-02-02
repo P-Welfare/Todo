@@ -12,7 +12,7 @@ header {
     background-color: red;
     height: 1000px;
     padding-left: 20px;
-    grid-template-rows: 50px 50px;
+    grid-template-rows: 50px 50px 50px 50px;
     grid-gap: 10px;
 }
 
@@ -26,3 +26,21 @@ header {
     background-color: darkgoldenrod;
     padding-left: 20px;
 }
+
+#addNewProjectContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#DOMArea {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px;
+    grid-template-rows: 100px 100px 100px 100px;
+    grid-template: auto;
+    grid-gap: 20px;    
+}
+
+#DOMArea div {
+    background-color: brown;
+    }
