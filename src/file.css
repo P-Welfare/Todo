@@ -4,12 +4,12 @@ header {
     font-size: 40px;
     align-items: center;
     justify-content: center;
-    background-color: darkgrey
+    background-color: darkred;
 }
 
 #sidebar {
     display: grid;
-    background-color: red;
+    background-color: orangered;
     height: 1000px;
     padding-left: 20px;
     grid-template-rows: 50px 50px 50px 50px;
@@ -23,7 +23,7 @@ header {
 }
 
 #DOMAreaContainer {
-    background-color: darkgoldenrod;
+    background-color: lightgray;
     padding-left: 20px;
 }
 
@@ -35,12 +35,28 @@ header {
 
 #DOMArea {
     display: grid;
-    grid-template-columns: 100px 100px 100px 100px;
-    grid-template-rows: 100px 100px 100px 100px;
-    grid-template: auto;
-    grid-gap: 20px;    
+    grid-template-columns: 250px 250px 250px 250px;
+    grid-template-rows: 250px 250px 250px 250px;
+    
 }
 
+
 #DOMArea div {
-    background-color: brown;
-    }
+    background-color: white;
+    border: solid black 5px;
+    height: 250px;
+    width: 250px;
+    padding: 10px;
+    margin: 5px;
+}
+
+#newTaskButton {
+    background-color: grey;
+    border: solid black 5px;
+    height: 75px;
+    width: 75px;
+}
+
+
+
+
