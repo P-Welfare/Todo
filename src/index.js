@@ -1,8 +1,15 @@
 import css from "./file.css";
 
 let projectList = []
+
+
+
 let status = ''
-let indexStatus = ''
+let indexStatus = '' 
+
+
+
+
 const addNewProjectButton = document.getElementById("addNewProjectButton")
 addNewProjectButton.addEventListener("click", (e) => {
     e.preventDefault
@@ -12,6 +19,7 @@ addNewProjectButton.addEventListener("click", (e) => {
 
     addProject(newProjectAdd)
     console.log(projectList)
+    populateStorage()
 
     populateProjectListDOM()
 })
@@ -50,8 +58,8 @@ function addTask(project,task) {
 };
 
 const defaultToDo = new toDo('brush teeth', 'brush em good', 'today', 'high')
-const defaultToDo2 = new toDo('eat teeth', 'eat em good', 'today', 'high' )
-const defaultToDo3 = new toDo('find teeth', 'eat em good', 'today', 'high' )
+const defaultToDo2 = new toDo('eat teeth', 'eat em good', 'today', 'medium' )
+const defaultToDo3 = new toDo('find teeth', 'eat em good', 'today', 'low' )
 
 
 addTask(0,defaultToDo)
@@ -75,6 +83,7 @@ const addToTaskArea = (id) => {
         toDoPara3.textContent = `${projectList[id].tasks[i].priority}`
 
         toDoContainer.textContent = `${projectList[id].tasks[i].title}`
+        toDoContainer.id = projectList[id].tasks[i].priority
         DOMArea.appendChild(toDoContainer)
         
         let DOMAreaButton = document.createElement('button')
@@ -98,9 +107,9 @@ const addToTaskArea = (id) => {
 
 
     }
-    activateDelete(id)
     activateEdit(id)
-
+    activateDelete(id)
+    populateStorage()
 
 }
 const newTask = () => {
@@ -136,13 +145,19 @@ projectTitleList.forEach((project, i) => {
     addModal(id)
     activateModal(id)
 
+
     })
 
     
 
 }) 
+
 }
 listProjectTitles()
+
+
+
+
 const deleteToDo = (id, indexRef) => {
     projectList[id].tasks.splice(indexRef, 1)
 
@@ -151,11 +166,14 @@ const deleteToDo = (id, indexRef) => {
 const activateDelete = (id) => {
         const deleteButtons = Array.from(document.getElementsByClassName('DOMAreaButton'))
             deleteButtons.forEach((element) => {
-                let indexRef = element.getAttribute('dataindex').value
                      element.addEventListener('click', () => {
+                        let indexRef = element.getAttribute('dataindex')
+                        console.log(indexRef)
                      deleteToDo(id, indexRef)
                      DOMArea.textContent = ''
                      addToTaskArea(id)
+                    
+
                     })
             })
 
@@ -213,24 +231,64 @@ const addModal = (id) => {
             descriptionField.textContent = "Description:"
 
         const descriptionInput = document.createElement('input')
-        descriptionInput.setAttribute("type", "text")
-        descriptionInput.id = 'description'
-
+            descriptionInput.setAttribute("type", "text")
+            descriptionInput.id = 'description'
         const dueDateField = document.createElement('label')
             dueDateField.setAttribute("for", "dueDate")
             dueDateField.textContent = "Due Date:"
 
         const dueDateInput = document.createElement('input')
-            dueDateInput.setAttribute("type", "text")
+            dueDateInput.setAttribute("type", "date")
             dueDateInput.id = 'dueDate'
 
+            const divPriorityContainer = document.createElement('div')
+            formContainer.appendChild(divPriorityContainer)
+        
         const priorityField = document.createElement('label')
-            priorityField.setAttribute("for", "priority")
-            priorityField.textContent = "Priority:"
+            priorityField.setAttribute("for", "low")
+            priorityField.textContent = "low"
+        const priorityInput = document.createElement("INPUT")
+            priorityInput.setAttribute("type", "radio")
+            priorityInput.id = 'low'
+            priorityInput.value = 'low'
+            priorityInput.name = 'priority'
+       
+        divPriorityContainer.appendChild(priorityField)
+        divPriorityContainer.appendChild(priorityInput)
 
-        const priorityInput = document.createElement('input')
-        priorityInput.setAttribute("type", "text")
-        priorityInput.id = 'priority'
+        
+        
+        const divPriorityContainer2 = document.createElement('div')
+            formContainer.appendChild(divPriorityContainer2)
+        const priorityField2 = document.createElement('label')
+            priorityField2.setAttribute("for", "medium")
+            priorityField2.textContent = "medium"    
+        const priorityInput2 = document.createElement("INPUT")
+            priorityInput2.setAttribute("type", "radio")
+            priorityInput2.id = 'medium'
+            priorityInput2.value = 'medium'
+            priorityInput2.name = 'priority'
+        
+            divPriorityContainer2.appendChild(priorityField2)
+            divPriorityContainer2.appendChild(priorityInput2)
+        
+
+        const divPriorityContainer3 = document.createElement('div')
+            formContainer.appendChild(divPriorityContainer3)
+        const priorityField3 = document.createElement('label')
+            priorityField3.setAttribute("for", "high")
+            priorityField3.textContent = "high"
+            const priorityInput3 = document.createElement("INPUT")
+            priorityInput3.setAttribute("type", "radio")
+            priorityInput3.id = 'high'
+            priorityInput3.value = 'high'
+            priorityInput3.name = 'priority'
+        
+            divPriorityContainer3.appendChild(priorityField3)
+            divPriorityContainer3.appendChild(priorityInput3)
+
+      
+
 
         const modalText = document.createElement('p')
              modalText.textContent = `Add new task to '${projectList[id].title}'.`
@@ -253,10 +311,8 @@ const addModal = (id) => {
              formContainer.appendChild(descriptionInput)
              formContainer.appendChild(dueDateField)
              formContainer.appendChild(dueDateInput)
-             formContainer.appendChild(priorityField)
-             formContainer.appendChild(priorityInput)
+           
 
-        
    }
 
 const activateModal = (id) => {
@@ -272,22 +328,25 @@ const activateModal = (id) => {
         const title = document.getElementById("title");
         const description = document.getElementById("description")
         const dueDate = document.getElementById("dueDate")
-        const priority = document.getElementById("priority")
-        var addNewTask = new toDo(title.value, description.value, dueDate.value, priority.value)
+        const priority = document.querySelector('input[name="priority"]:checked').value
+        var addNewTask = new toDo(title.value, description.value, dueDate.value, priority)
         addTask(id, addNewTask)
         DOMArea.textContent = ''
         addToTaskArea(id)
+        populateStorage()
+
     } else if (status == 'edit') {
         const title = document.getElementById("title");
         const description = document.getElementById("description")
         const dueDate = document.getElementById("dueDate")
-        const priority = document.getElementById("priority")
+        const priority = document.querySelector('input[name="priority"]:checked').value
         projectList[id].tasks[indexStatus].title = title.value
         projectList[id].tasks[indexStatus].description = description.value
         projectList[id].tasks[indexStatus].dueDate = dueDate.value
-        projectList[id].tasks[indexStatus].priority = priority.value
+        projectList[id].tasks[indexStatus].priority = priority
         DOMArea.textContent = ''
         addToTaskArea(id)
+        populateStorage()
 
 
     }
@@ -313,18 +372,21 @@ const activateProjectDeleteButtons = () => {
             deleteProjectFunction(id)
             populateProjectListDOM(id)
             listProjectTitles()
-            
+            populateStorage()
+
         })
-       
+
     }  )
     
 
 }
 
 
+
 const deleteProjectFunction = (id) => {
     projectList.splice(id, 1)
     console.log(id)
+
 }
 
 
@@ -351,11 +413,74 @@ projectList.forEach((element, i) =>
    
    
 })
-
 activateProjectDeleteButtons()
 listProjectTitles()
+activateDelete(id)
+
 }
 
-populateProjectListDOM()
 
+
+function storageAvailable(type) {
+    let storage;
+    try {
+      storage = window[type];
+      const x = "__storage_test__";
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    } catch (e) {
+      return (
+        e instanceof DOMException &&
+        // everything except Firefox
+        (e.code === 22 ||
+          // Firefox
+          e.code === 1014 ||
+          // test name field too, because code might not be present
+          // everything except Firefox
+          e.name === "QuotaExceededError" ||
+          // Firefox
+          e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+        // acknowledge QuotaExceededError only if there's something already stored
+        storage &&
+        storage.length !== 0
+      );
+    }
+  }
+
+
+if (storageAvailable("localStorage")) {
+    console.log("Local Storage Available")
+    
+    
+ 
+    function checkLocalStorage() {
+        if (!localStorage.getItem("projectList")) {
+            populateStorage()
+            } else {    
+        getProjectList();
+      } 
+    } 
+    checkLocalStorage()
+
+      } else {
+        console.log("No local storage available")
+        }
+
+        function getProjectList() {
+            let stringProjectList = localStorage.getItem("projectList")
+            let stringProjectList2 = JSON.parse(stringProjectList)
+           console.log(stringProjectList2)
+           projectList = stringProjectList2
+           console.log(projectList)
+           
+       }
+       function populateStorage() {
+           let myJSON = JSON.stringify(projectList)
+           console.log(myJSON)
+           localStorage.setItem("projectList", myJSON);
+       }
+
+
+       populateProjectListDOM()
 

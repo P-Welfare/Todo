@@ -42,10 +42,9 @@ header {
 
 
 #DOMArea div {
-    background-color: white;
     border: solid black 5px;
-    height: 250px;
-    width: 250px;
+    height: 225px;
+    width: 225px;
     padding: 10px;
     margin: 5px;
 }
@@ -57,6 +56,15 @@ header {
     width: 75px;
 }
 
+#high {
+    background-color: red;
+}
 
+#medium {
+    background-color: orange;
+}
 
+#low {
+    background-color: green;
+}
 
